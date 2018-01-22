@@ -1,0 +1,46 @@
+JH1 worksheet
+
+
+I think We just opted out Class Participation So may be I don’t need to fill Class Participation Part?
+***************** Class Participation    *****************
+Your Class Participation Entry for JH1:
+Discussion board containing your entry: ____________________________
+Date of your Entry: _1/19/2018______
+Subject Line of your entry: _Reading_With_Exceptions__________
+
+
+I am going to add my console output screen and my code after that.
+***************** reading_with_exceptions    *****************
+
+reading_with_exceptions output from the screen when the command line parameters are:
+
+file1.txt?non-existent-file file2.txt file3.txt
+
+
+Processing test1.txt...
+ 20 1 4 5 7 8 9 10 11 12 
+ 13 14 45 46 47 48 49 50 51 1 
+ 2 3
+
+Processing non_existing_file.txt...
+non_existing_file.txt does not exist in the given path.
+
+Processing test2.txt...
+ 20 1 [Bad_Intput!(x)] 5 7 45 1 2 3 4 
+ 5 6 7 8 9 77 88 99 23 34 
+ 56
+ [Insufficient Data!]
+
+Processing test3.txt...
+[Bad input for numbers_to_read!(x0)]
+ 20 1 5 7 45 1 2 3 4 5 
+ 6 7 8 9 77 88 99 23 34 56 
+ 99 88 11 22 33 44 55 66 77
+
+
+
+
+
+
+
+

@@ -4,6 +4,7 @@ import java.util.*;
 
 public class FileOperations {
 	StringTokenizer parseCommand;
+	File currFile;
 	
 	public void delete(){
 		//		code for handling the delete command
@@ -42,18 +43,35 @@ public class FileOperations {
 		// code for handling the lastModified command
 	}
 	
-	public void mkdir(){
+	public void mkdir(String line){
 		//		code for handling the mkdir command
 		//		Make sure you check the return code from the
 		//File mkdir method to print out success/failure status
+		String dirName = parseCommand.nextToken();
+		File dir = new File(dirName);
 	}
 	
-	public void createFile(){
+	public void createFile(String line){
 		// code for handling the createFile command
+		String fileName = null;
+		try {
+			fileName = parseCommand.nextToken();
+			File newFile = new File(fileName);
+			FileOutputStream outstream = new FileOutputStream(fileName);
+			PrintStream print = new PrintStream(outstream);
+			while(parseCommand.hasMoreTokens()) {
+				String writeData = parseCommand.nextToken();
+				print.;
+			}
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("You are trying to create an outputstream to nonexisting file named :" + fileName);
+		}
 	}
 
 	public void printFile(){
 		// code for handling the printFile command
+		if()
 	}
 
 	void printUsage(){
@@ -120,6 +138,8 @@ public class FileOperations {
 			
 			case("mkdir"):{
 				System.out.println("Processing: mkdir");
+				String dirName = 
+				File dir = new File("")
 			}
 			
 			case("delete"):{
@@ -149,12 +169,24 @@ public class FileOperations {
 		//		using the Scanner line by line. For each line read, call processCommandLine. Continue reading
 		//		from this file as long as processCommandLine returns true and there are more lines in the file.
 		//		At the end, close the Scanner.
-		File cmds = new File(commandFile);
-		Scanner scan = new Scanner(commandFile);
-		String lineIn = null;
-		while(scan.hasNextLine()) {
-			lineIn = scan.nextLine();
-			processCommandLine(lineIn);
+		FileInputStream cmds = null;
+		Scanner scan = null;
+		try {
+			cmds = new FileInputStream(commandFile);
+			scan = new Scanner(cmds);
+			String lineIn = null;
+			while(scan.hasNextLine()) {
+				lineIn = scan.nextLine();
+				parseCommand = new StringTokenizer(lineIn);
+				processCommandLine(lineIn);
+				parseCommand = null;
+			}
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("Could not find file named: " + commandFile);
+		}
+		if(cmds != null) {
+			cmds.close();
 		}
 		if(scan != null) {
 			scan.close();

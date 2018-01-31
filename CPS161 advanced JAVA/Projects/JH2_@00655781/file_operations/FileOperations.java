@@ -61,7 +61,7 @@ public class FileOperations {
 			PrintStream print = new PrintStream(outstream);
 			while(parseCommand.hasMoreTokens()) {
 				String writeData = parseCommand.nextToken();
-				print.;
+				print.println(writeData);
 			}
 		}
 		catch(FileNotFoundException e) {
@@ -69,9 +69,36 @@ public class FileOperations {
 		}
 	}
 
-	public void printFile(){
+	public void printFile(String line){
 		// code for handling the printFile command
-		if()
+		String fileName = parseCommand.nextToken();
+		FileInputStream readFile = null;
+		Scanner scanFile = null;
+		String outFileName = null;
+		if(parseCommand.hasMoreTokens()) {
+			outFileName = parseCommand.nextToken();
+		}
+		else {
+			System.out.println("No output file name given!");
+			return;
+		}
+		File newFile = new File(outFileName);
+		FileOutputStream outStream = null;
+		PrintStream print = null;
+				
+		try {
+			readFile = new FileInputStream(fileName);
+			scanFile = new Scanner(readFile);
+			outStream = new FileOutputStream(outFileName);
+			print = new PrintStream(outStream);
+			while(scanFile.hasNext()) {
+				print.println(scanFile.next());
+			}
+		}
+		catch(FileNotFoundException e) {
+			System.out.println("Tring to print non existing file named: " + fileName);
+			
+		}
 	}
 
 	void printUsage(){
@@ -138,8 +165,7 @@ public class FileOperations {
 			
 			case("mkdir"):{
 				System.out.println("Processing: mkdir");
-				String dirName = 
-				File dir = new File("")
+				mkdir(line);
 			}
 			
 			case("delete"):{
@@ -186,7 +212,7 @@ public class FileOperations {
 			System.out.println("Could not find file named: " + commandFile);
 		}
 		if(cmds != null) {
-			cmds.close();
+			//cmds.close();
 		}
 		if(scan != null) {
 			scan.close();

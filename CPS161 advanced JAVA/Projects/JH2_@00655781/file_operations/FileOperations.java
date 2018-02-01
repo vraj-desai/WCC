@@ -28,7 +28,7 @@ public class FileOperations {
 	public void rename(){
 		//		code for handling the rename command
 		//		Make sure you check the return code from the
-		//		File rename method to print out success/failure statusw
+		//		File rename method to print out success/failure status
 	}
 
 	public void list(){
@@ -116,14 +116,14 @@ public class FileOperations {
 	//useful private routine for getting a File class from the next string on the command line
 	private File getFile(){
 		File f = null;
-		String fileName = getNextToken(); 
+		String fileName = getNextToken();
 		if (fileName == null)
 			System.out.println("Missing a File name");
 		else
 			f = new File(fileName);
 		return f;
 	}
-
+	
 	private void printhelpcmd() {
 		System.out.print("?\ndelete filename\nrename oldFilename newFilename\nsize filename\nlastModified filename\nlist dir\nprintFile filename\ncreateFile filename\nmkdir dir\nquit");
 	}
@@ -141,47 +141,58 @@ public class FileOperations {
 			switch(cmd) {
 			case("?"):{
 				System.out.println("Processing: ?");
+				break;
 			}
 						
 			case("createFile"):{
 				System.out.println("Processing: createFile");
+				break;
 			}
 			
 			case("printFile"):{
 				System.out.println("Processing: printFile");
+				break;
 			}
 			
 			case("lastModified"):{
 				System.out.println("Processing: lastModified");
+				break;
 			}
 			
 			case("size"):{
 				System.out.println("Processing: size");
+				break;
 			}
 			
 			case("rename"):{
 				System.out.println("Processing: rename");
+				break;
 			}
 			
 			case("mkdir"):{
 				System.out.println("Processing: mkdir");
 				mkdir(line);
+				break;
 			}
 			
 			case("delete"):{
 				System.out.println("Processing: delete");
+				break;
 			}
 			
 			case("list"):{
 				System.out.println("Processing: list");
+				break;
 			}
 			
 			case("quit"):{
 				System.out.println("Processing: quit");
+				break;
 			}
 			
 			default:{
 				System.out.println("[Invalid Command! Try again!]");
+				break;
 			}
 			}
 			return true;

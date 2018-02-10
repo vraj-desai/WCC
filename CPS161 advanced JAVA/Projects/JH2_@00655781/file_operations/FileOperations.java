@@ -28,12 +28,14 @@ public class FileOperations {
 		//		code for handling the rename command
 		//		Make sure you check the return code from the
 		//		File rename method to print out success/failure status
-		String fileName = parseCommand.nextToken();
-		File oldFile = new File(fileName);
+		File oldFile = new File(parseCommand.nextToken());
 		if(oldFile.exists()){
-			String fileRename = parseCommand.nextToken();
-			File newFile = new File(fileRename);
-			oldFile.renameTo(newFile);
+			File newFile = new File(parseCommand.nextToken());
+			boolean isFileRenamed = oldFile.renameTo(newFile);
+			if(isFileRenamed)
+				System.out.println("File renamed successfully!");
+			else
+				System.out.println("File rename unsuccessful!");
 		}
 		else {
 			System.out.println("The old file does not exist!");
@@ -192,66 +194,66 @@ public class FileOperations {
 			String cmd = getNextToken();
 			switch(cmd) {
 			case("?"):{
-				System.out.println("Processing: ?");
+				System.out.println("#########################################################Processing: ?#########################################################");
 				printUsage();
 				break;
 			}
 						
 			case("createFile"):{
-				System.out.println("Processing: createFile");
+				System.out.println("#########################################################Processing: createFile#########################################################");
 				createFile();
 				break;
 			}
 			
 			case("printFile"):{
-				System.out.println("Processing: printFile");
+				System.out.println("#########################################################Processing: printFile#########################################################");
 				printFile();
 				break;
 			}
 			
 			case("lastModified"):{
-				System.out.println("Processing: lastModified");
+				System.out.println("#########################################################Processing: lastModified#########################################################");
 				lastModified();
 				break;
 			}
 			
 			case("size"):{
-				System.out.println("Processing: size");
+				System.out.println("#########################################################Processing: size#########################################################");
 				size();
 				break;
 			}
 			
 			case("rename"):{
-				System.out.println("Processing: rename");
+				System.out.println("#########################################################Processing: rename#########################################################");
 				rename();
 				break;
 			}
 			
 			case("mkdir"):{
-				System.out.println("Processing: mkdir");
+				System.out.println("#########################################################Processing: mkdir#########################################################");
 				mkdir();
 				break;
 			}
 			
 			case("delete"):{
-				System.out.println("Processing: delete");
+				System.out.println("#########################################################Processing: delete#########################################################");
 				delete();
 				break;
 			}
 			
 			case("list"):{
-				System.out.println("Processing: list");
+				System.out.println("#########################################################Processing: list#########################################################");
 				break;
 			}
 			
 			case("quit"):{
-				System.out.println("Processing: quit");
+				System.out.println("#########################################################Processing: quit#########################################################");
 				list();
 				break;
 			}
 			
 			default:{
-				System.out.println("[Invalid Command! Try again!]");
+				System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!![Invalid Command! Try again!]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 				break;
 			}
 			}

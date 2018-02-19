@@ -1,0 +1,9 @@
+mkdir dir
+createFile file1.txt a b c d e f g
+printFile file1.txt
+lastModified file1.txt
+size file1.txt
+rename file1.txt newFile1.txt
+list .
+delete newFile1.txt
+delete

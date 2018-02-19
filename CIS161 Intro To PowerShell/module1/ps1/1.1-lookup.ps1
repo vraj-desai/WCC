@@ -1,0 +1,1 @@
+nslookup 198.111.176.6 | Select-String 'Name'

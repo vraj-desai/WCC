@@ -1,0 +1,7 @@
+﻿$Host.UI.RawUI.BackgroundColor = 'gray'
+$Host.UI.RawUI.ForegroundColor = 'blue'
+$Host.UI.RawUI.WindowTitle = 'Vraj Desai'
+$Host.UI.RawUI.CursorSize = 50
+Clear-Host
+
+

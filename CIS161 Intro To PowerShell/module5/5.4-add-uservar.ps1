@@ -1,3 +1,6 @@
 ﻿param($name, $value)
-[Environment]::SetEnvironmentVariable($name, $value)
-writehost 'add new environment variable $name with value $value'
+new-item -path env: -name $name -value $value
+writehost 'add new environment variable' -nonewline
+writehost $name -nonewline
+writehost 'with value' -nonewline 
+writehost $value

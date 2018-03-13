@@ -117,6 +117,7 @@ public class MovingString extends JFrame implements Runnable {
 		//Update StartPoint for First Time
 		StartingPoint = new Point((UpperRight.x-StringWidth)/2, LowerLeft.y/2);
 		g.drawString(text, StartingPoint.x, StartingPoint.y);
+		update();
 	}
 	
 
@@ -125,7 +126,6 @@ public class MovingString extends JFrame implements Runnable {
 		while(true) {
 			try {
 				Thread.sleep(100);
-				update();
 				repaint();
 			}
 			catch(InterruptedException e) {}

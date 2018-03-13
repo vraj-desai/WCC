@@ -5,17 +5,19 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Insets;
+import java.awt.Point;
 import java.util.Random;
 
 import javax.swing.JFrame;
 
 public class MovingString extends JFrame implements Runnable {
 
-	private int fontSize = 35;
-	boolean fontsizeIncrease = true;
-	double x_vel = Math.random();
-	double y_vel = Math.random();
-	int leftX, rightX,upY,downY,frameWidth,frameHeight;
+	static private int fontSize = 90;
+	static boolean fontsizeIncrease = true;
+	static double x_vel,y_vel;
+	static Point UpperRight, UpperLeft, LowerLeft, LowerRight, StartingPoint;
+	int StringWidth, StringHeight, StringAscent;
 	private Color color_generator() {
 		Random r = new Random();
 		Color color = new Color(r.nextFloat(),r.nextFloat(), r.nextFloat());
@@ -23,62 +25,108 @@ public class MovingString extends JFrame implements Runnable {
 	}
 	
 	public MovingString() {
+		
 		super("Moving String");
 		setSize(800,600);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
+		//update points of the frame
+		Insets insets = getInsets();
+		Dimension d = getSize();
+		UpperRight = new Point(d.width - insets.right,insets.top);
+		UpperLeft = new Point(insets.left,insets.top);
+		LowerLeft = new Point(insets.left, d.height - insets.bottom);
+		LowerRight = new Point(d.width-insets.right, d.height-insets.bottom);
+		x_vel = (-10 + (int)(20*Math.random()));
+		y_vel = -10 + (int)(20*Math.random());
+		
+		//Thread
 		Thread t = new Thread(this);
+		setResizable(false);
 		t.start(); 
 	}
 	
+	public void update() {
+		//Update fontsize and positioning
+		StartingPoint.x += x_vel;
+		StartingPoint.y += y_vel;
+		
+		if(fontsizeIncrease) {
+			fontSize++;
+		}
+		else {
+			fontSize--;
+		}
+		if(fontSize < 90) {
+			fontsizeIncrease = true;
+			fontSize = 90;
+		}
+		
+		if(StartingPoint.x + StringWidth > UpperRight.x) {
+			x_vel *= -1;
+			StartingPoint.x = UpperRight.x - StringWidth;
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
+			}
+			else
+				fontsizeIncrease = true;
+		}
+		
+		if(StartingPoint.x < UpperLeft.x) {
+			x_vel *= -1;
+			StartingPoint.x = UpperLeft.x;
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
+			}
+			else
+				fontsizeIncrease = true;
+		}
+		
+		if(StartingPoint.y - StringAscent < UpperLeft.y) {
+			y_vel *= -1;
+			StartingPoint.y = UpperLeft.y;
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
+			}
+			else
+				fontsizeIncrease = true;
+		}
+		
+		if(StartingPoint.y + (StringHeight-StringAscent) > LowerLeft.y) {
+			y_vel *= -1;
+			StartingPoint.y = LowerLeft.y;
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
+			}
+			else
+				fontsizeIncrease = true;
+		}
+	}
+	
 	public void paint(Graphics g) {
-		String text = "Hello";
+		
+		//Setting Up the Font
+		String text = "Vraj";
 		g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
 		g.setColor(color_generator());
-		Dimension d = getSize();
-		frameWidth = d.width;
-		frameHeight = d.height;
-		FontMetrics fm = getFontMetrics(g.getFont());
-		int fontHeight = fm.getHeight();
-		int maxAscent = fm.getAscent();		int fontWidth = fm.stringWidth(text);
-		leftX = (d.width/2)-(fontWidth/2);
-		rightX = (d.width/2)+(fontWidth/2);
-		upY =  d.height/2 - maxAscent;
-		downY = d.height/2 - maxAscent +fontHeight;
-		g.drawString(text, (int)(leftX+x_vel) , (int)((d.height/2)+maxAscent));
-		System.out.println(fontWidth);
+		StringHeight = g.getFontMetrics().getHeight();
+		StringAscent = g.getFontMetrics().getAscent();
+		StringWidth = g.getFontMetrics().stringWidth(text);
+		
+		//Update StartPoint for First Time
+		StartingPoint = new Point((UpperRight.x-StringWidth)/2, LowerLeft.y/2);
+		g.drawString(text, StartingPoint.x, StartingPoint.y);
 	}
 	
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while(true) {
 			try {
 				Thread.sleep(100);
-				if(fontSize == 20) {
-					fontsizeIncrease = true;
-				}
-				if(leftX <= 0 || rightX >= 800 || upY <= 0 || downY >= 600) {
-					x_vel *= -1;
-					y_vel *= -1;
-					if(fontsizeIncrease == true) {
-						fontsizeIncrease = false;
-					}
-					repaint();
-				}
-				else {
-					if(fontsizeIncrease) {
-						fontSize++;
-					}
-					else {
-						x_vel++;
-						y_vel++;
-						fontSize--;
-					}
-					repaint();
-				}
+				update();
+				repaint();
 			}
 			catch(InterruptedException e) {}
 		}

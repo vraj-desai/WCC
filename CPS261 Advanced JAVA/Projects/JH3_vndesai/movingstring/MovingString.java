@@ -1,4 +1,4 @@
-package movingstring;
+package MovingString;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -12,10 +12,10 @@ import javax.swing.JFrame;
 public class MovingString extends JFrame implements Runnable {
 
 	private int fontSize = 35;
-	private String text = "Hello";
-	Font font = null;
+	boolean fontsizeIncrease = true;
+	double x_vel = Math.random();
+	double y_vel = Math.random();
 	int leftX, rightX,upY,downY,frameWidth,frameHeight;
-	
 	private Color color_generator() {
 		Random r = new Random();
 		Color color = new Color(r.nextFloat(),r.nextFloat(), r.nextFloat());
@@ -29,25 +29,25 @@ public class MovingString extends JFrame implements Runnable {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		Thread t = new Thread(this);
-		t.start();
+		t.start(); 
 	}
 	
 	public void paint(Graphics g) {
-		font = g.getFont();
+		String text = "Hello";
 		g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
 		g.setColor(color_generator());
 		Dimension d = getSize();
 		frameWidth = d.width;
 		frameHeight = d.height;
-		FontMetrics fm = getFontMetrics(font);
+		FontMetrics fm = getFontMetrics(g.getFont());
 		int fontHeight = fm.getHeight();
-		int maxAscent = fm.getAscent();
-		int fontWidth = fm.stringWidth(text);
+		int maxAscent = fm.getAscent();		int fontWidth = fm.stringWidth(text);
 		leftX = (d.width/2)-(fontWidth/2);
-		rightX = (d.width/2)-(fontWidth/2)+fontWidth;
+		rightX = (d.width/2)+(fontWidth/2);
 		upY =  d.height/2 - maxAscent;
 		downY = d.height/2 - maxAscent +fontHeight;
-		g.drawString(text, (d.width/2)-(fontWidth/2) , (d.height/2)+maxAscent);
+		g.drawString(text, (int)(leftX+x_vel) , (int)((d.height/2)+maxAscent));
+		System.out.println(fontWidth);
 	}
 	
 
@@ -57,12 +57,26 @@ public class MovingString extends JFrame implements Runnable {
 		while(true) {
 			try {
 				Thread.sleep(100);
+				if(fontSize == 20) {
+					fontsizeIncrease = true;
+				}
 				if(leftX <= 0 || rightX >= 800 || upY <= 0 || downY >= 600) {
-					fontSize = 35;
+					x_vel *= -1;
+					y_vel *= -1;
+					if(fontsizeIncrease == true) {
+						fontsizeIncrease = false;
+					}
 					repaint();
 				}
 				else {
-					fontSize++;
+					if(fontsizeIncrease) {
+						fontSize++;
+					}
+					else {
+						x_vel++;
+						y_vel++;
+						fontSize--;
+					}
 					repaint();
 				}
 			}

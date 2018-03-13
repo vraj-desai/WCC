@@ -1,6 +1,6 @@
 ﻿param($name, $value)
-new-item -path env: -name $name -value $value
-writehost 'add new environment variable' -nonewline
-writehost $name -nonewline
-writehost 'with value' -nonewline 
-writehost $value
+write-host 'add new environment variable ' -nonewline
+write-host $name -nonewline
+write-host ' with value ' -nonewline 
+write-host $value
+new-item -path env: -name $name -value $value 

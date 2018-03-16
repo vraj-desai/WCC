@@ -51,7 +51,7 @@ public class graphing extends JFrame {
 		return MaxVal;
 	}
 	
-	public void paint(Graphics2D g) {
+	public void paint(Graphics g) {
 		super.paint(g);
 		Dimension d = getSize();
 		Insets insets = getInsets();
@@ -60,16 +60,21 @@ public class graphing extends JFrame {
 		int right = insets.right;
 		int bottom = insets.bottom;
 		int graphBorder = 10;
+		int width = d.width;
+		int height = d.height;
 		
 		//set color to red
 		Color color = Color.RED;
 		g.setColor(color);
-		
 		//Draw red rectangle with 10 pixel width
-		Stroke oldStroke = g.getStroke();
-		g.setStroke(new BasicStroke(graphBorder));
-		g.drawRect(top, left, right, bottom);
-		g.setStroke(oldStroke);
+		
+		for(int i = 1; i < 11; i++) {
+			g.drawRect(left + i, top + i,width-right-i , height-bottom-i);
+		}
+		/*for(int i = 0; i < 10; i++) {
+			g.drawRect(0+left+i,0+top+i,600-left-i, 600-top-i);
+		}*/
+		
 		
 		//set color to black
 		color = Color.BLACK;

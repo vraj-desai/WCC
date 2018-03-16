@@ -1,6 +1,8 @@
 package drawing;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class Drawing {
 	}
 	
 	public void draw(Graphics g) {
+		
 		for(int i = 1; i < shapeArr.size(); i++) {
 			Shape s = shapeArr.get(i);
 			s.draw(g);
@@ -40,7 +43,6 @@ public class Drawing {
 		if(currShape != null) {
 			currShape.draw(g);
 		}
-		
 	}
 	
 	public void setColor(Color color_in) {
@@ -76,9 +78,11 @@ public class Drawing {
 	public void mouseDragged(Point p) {
 		switch(drawingProperties.drawType){
 		case oval:
-		case line:
 			currShape.followingPoint(p);
 			break;
+		case line:
+			//currShape.followingPoint(p);
+			//break;
 		}
 	}
 }
@@ -114,14 +118,16 @@ class oval extends Shape{
 	@Override
 	void draw(Graphics g) {
 		g.setColor(color);
-		int x = Math.min(startPoint.x, lastPoint.x);
-		int y = Math.min(startPoint.y, lastPoint.y);
-		int width = Math.max(startPoint.x, lastPoint.x);
-		int height = Math.max(startPoint.y, lastPoint.y);
+		int x_start = Math.min(startPoint.x, lastPoint.x);
+		int y_start = Math.min(startPoint.y, lastPoint.y);
+		int x_end = Math.max(startPoint.x, lastPoint.x);
+		int y_end = Math.max(startPoint.y, lastPoint.y);
+		int width = Math.abs(x_end - x_start);
+		int height = Math.abs(y_end - y_start);
 		if(filled)
-			g.drawOval(x, y, width, height);
+			g.fillOval(x_start, y_start, width, height);
 		else
-			g.fillOval(x, y, width, height);
+			g.drawOval(x_start, y_start, width, height);
 	}
 
 	@Override
@@ -142,6 +148,7 @@ class line extends Shape{
 	@Override
 	void firstPoint(Point p) {
 		startPoint  = p;
+		endPoint = p;
 	}
 
 	@Override

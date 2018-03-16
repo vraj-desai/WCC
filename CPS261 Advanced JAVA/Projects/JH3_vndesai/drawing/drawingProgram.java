@@ -2,7 +2,9 @@ package drawing;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -13,11 +15,12 @@ import javax.swing.JFrame;
 public class drawingProgram extends JFrame{
 
 	Drawing drawing = new Drawing();
+	Image offScreenImage = null;
+	Dimension screenDimension = null;
 	
 	class MyMouseHandler extends MouseAdapter{
 		public void mousePressed(MouseEvent e) {
 			drawing.mousePressed(e.getPoint());
-			repaint();
 		}
 		
 		public void mouseReleased(MouseEvent e) {
@@ -46,13 +49,29 @@ public class drawingProgram extends JFrame{
 	
 	public void paint(Graphics g) {
 		Dimension dimen = getSize();
+		
+		if(offScreenImage != null || !dimen.equals(screenDimension)) {
+			screenDimension = dimen;
+			offScreenImage = createImage(dimen.width, dimen.height);
+		}
+		Graphics screen = offScreenImage.getGraphics();
 		Insets insets = getInsets();
 		int top = insets.top;
 		int left = insets.left;
-		g.setColor(Color.WHITE);
-		g.fillRect(0,0,dimen.width,dimen.height);
-		drawing.draw(g);
+		
+		screen.setColor(Color.WHITE);
+		screen.fillRect(0,0,dimen.width,dimen.height);
+		drawing.draw(screen);
+		//Printing Info at the Top
 		String str = drawing.toString();
+		screen.setFont(new Font("TimesRoman", Font.PLAIN, 20));
+		int FontHeight = screen.getFontMetrics().getHeight();
+		int FontAscent = screen.getFontMetrics().getAscent();
+		screen.setColor(Color.YELLOW);
+		screen.fillRect(0+left, 0+top, 800, FontHeight);
+		screen.setColor(Color.BLACK);
+		screen.drawString(str, 0+left, 0+top+FontAscent);
+		g.drawImage(offScreenImage, 0, 0, this);
 	}
 	
 	public static void main(String[] args) {
@@ -101,10 +120,10 @@ public class drawingProgram extends JFrame{
 				System.out.println("g - green color objects");
 				break;
 			}
-			System.out.println("Exiting Program");
-			dp.dispose() ;
-			keyboard.close();
 		}
+		System.out.println("Exiting Program");
+		dp.dispose() ;
+		keyboard.close();
 	}
 
 }

@@ -1,9 +1,0 @@
-mkdir dir
-createFile dir/file1.txt a b c d e f g
-printFile dir/file1.txt
-lastModified dir/file1.txt
-size dir/file1.txt
-rename dir/file1.txt dir/newFile1.txt
-list dir
-delete dir/newFile1.txt
-delete dir

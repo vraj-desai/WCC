@@ -3,8 +3,8 @@ package MovingString;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Point;
 import java.util.Random;
@@ -16,8 +16,11 @@ public class MovingString extends JFrame implements Runnable {
 	static private int fontSize = 90;
 	static boolean fontsizeIncrease = true;
 	static double x_vel,y_vel;
-	static Point UpperRight, UpperLeft, LowerLeft, LowerRight, StartingPoint;
+	static Point CurrPoint;
 	int StringWidth, StringHeight, StringAscent;
+	Insets ScreenInsets = null;
+	Image OffScreenImage = null;
+	Dimension ScreenDimen = null;
 	private Color color_generator() {
 		Random r = new Random();
 		Color color = new Color(r.nextFloat(),r.nextFloat(), r.nextFloat());
@@ -32,12 +35,7 @@ public class MovingString extends JFrame implements Runnable {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		//update points of the frame
-		Insets insets = getInsets();
-		Dimension d = getSize();
-		UpperRight = new Point(d.width - insets.right,insets.top);
-		UpperLeft = new Point(insets.left,insets.top);
-		LowerLeft = new Point(insets.left, d.height - insets.bottom);
-		LowerRight = new Point(d.width-insets.right, d.height-insets.bottom);
+		ScreenInsets = getInsets();
 		x_vel = (-10 + (int)(20*Math.random()));
 		y_vel = -10 + (int)(20*Math.random());
 		
@@ -49,8 +47,9 @@ public class MovingString extends JFrame implements Runnable {
 	
 	public void update() {
 		//Update fontsize and positioning
-		StartingPoint.x += x_vel;
-		StartingPoint.y += y_vel;
+		CurrPoint.x += x_vel;
+		CurrPoint.y += y_vel;
+		
 		
 		if(fontsizeIncrease) {
 			fontSize++;
@@ -63,9 +62,9 @@ public class MovingString extends JFrame implements Runnable {
 			fontSize = 90;
 		}
 		
-		if(StartingPoint.x + StringWidth > UpperRight.x) {
+		if(CurrPoint.x + StringWidth > ScreenDimen.width-ScreenInsets.right) {
 			x_vel *= -1;
-			StartingPoint.x = UpperRight.x - StringWidth;
+			CurrPoint.x = ScreenInsets.right - StringWidth;	
 			if(fontsizeIncrease == true) {
 				fontsizeIncrease = false;
 			}
@@ -73,9 +72,9 @@ public class MovingString extends JFrame implements Runnable {
 				fontsizeIncrease = true;
 		}
 		
-		if(StartingPoint.x < UpperLeft.x) {
+		if(CurrPoint.x < ScreenInsets.left) {
 			x_vel *= -1;
-			StartingPoint.x = UpperLeft.x;
+			CurrPoint.x = ScreenInsets.left;
 			if(fontsizeIncrease == true) {
 				fontsizeIncrease = false;
 			}
@@ -83,9 +82,9 @@ public class MovingString extends JFrame implements Runnable {
 				fontsizeIncrease = true;
 		}
 		
-		if(StartingPoint.y - StringAscent < UpperLeft.y) {
+		if(CurrPoint.y - StringAscent < ScreenInsets.top) {
 			y_vel *= -1;
-			StartingPoint.y = UpperLeft.y;
+			CurrPoint.y = ScreenInsets.top;
 			if(fontsizeIncrease == true) {
 				fontsizeIncrease = false;
 			}
@@ -93,9 +92,9 @@ public class MovingString extends JFrame implements Runnable {
 				fontsizeIncrease = true;
 		}
 		
-		if(StartingPoint.y + (StringHeight-StringAscent) > LowerLeft.y) {
+		if(CurrPoint.y + (StringHeight - StringAscent) > ScreenInsets.bottom) {
 			y_vel *= -1;
-			StartingPoint.y = LowerLeft.y;
+			CurrPoint.y = ScreenInsets.bottom;
 			if(fontsizeIncrease == true) {
 				fontsizeIncrease = false;
 			}
@@ -103,20 +102,34 @@ public class MovingString extends JFrame implements Runnable {
 				fontsizeIncrease = true;
 		}
 	}
-	
-	public void paint(Graphics g) {
+	boolean temp = true; 
+	public void paint(Graphics screen) {
 		
+		Dimension dimen = this.getSize();
+		
+		if(OffScreenImage != null || !dimen.equals(ScreenDimen)) {
+			ScreenDimen = dimen;
+			OffScreenImage = createImage(dimen.width, dimen.height);
+		}
+		Graphics g = OffScreenImage.getGraphics();
 		//Setting Up the Font
 		String text = "Vraj";
-		g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+		/*g.setColor(Color.WHITE);
+		g.fillRect(ScreenInsets.left, ScreenInsets.top, ScreenDimen.width - ScreenInsets.right, ScreenDimen.height - ScreenInsets.bottom);
+		*/g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
 		g.setColor(color_generator());
 		StringHeight = g.getFontMetrics().getHeight();
 		StringAscent = g.getFontMetrics().getAscent();
 		StringWidth = g.getFontMetrics().stringWidth(text);
 		
 		//Update StartPoint for First Time
-		StartingPoint = new Point((UpperRight.x-StringWidth)/2, LowerLeft.y/2);
-		g.drawString(text, StartingPoint.x, StartingPoint.y);
+		if(temp) {
+			CurrPoint = new Point((ScreenDimen.width-StringWidth)/2, (ScreenDimen.height/2)-StringAscent);
+			temp = false;
+		}
+		
+		g.drawString(text, CurrPoint.x, CurrPoint.y);
+		screen.drawImage(OffScreenImage, 0, 0, this);
 		update();
 	}
 	

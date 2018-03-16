@@ -13,14 +13,15 @@ import javax.swing.JFrame;
 
 public class MovingString extends JFrame implements Runnable {
 
+	static boolean temp = true; 
 	static private int fontSize = 90;
 	static boolean fontsizeIncrease = true;
 	static double x_vel,y_vel;
 	static Point CurrPoint;
-	int StringWidth, StringHeight, StringAscent;
-	Insets ScreenInsets = null;
-	Image OffScreenImage = null;
-	Dimension ScreenDimen = null;
+	static int StringWidth, StringHeight, StringAscent;
+	static Insets ScreenInsets = null;
+	static Image OffScreenImage = null;
+	static Dimension ScreenDimen = null;
 	private Color color_generator() {
 		Random r = new Random();
 		Color color = new Color(r.nextFloat(),r.nextFloat(), r.nextFloat());
@@ -33,15 +34,15 @@ public class MovingString extends JFrame implements Runnable {
 		setSize(800,600);
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		//update points of the frame
 		ScreenInsets = getInsets();
-		x_vel = (-10 + (int)(20*Math.random()));
-		y_vel = -10 + (int)(20*Math.random());
+		x_vel = (int)(-10 + (int)(20*Math.random()));
+		y_vel = (int)(-10 + (int)(20*Math.random()));
 		
 		//Thread
 		Thread t = new Thread(this);
-		setResizable(false);
 		t.start(); 
 	}
 	
@@ -51,65 +52,64 @@ public class MovingString extends JFrame implements Runnable {
 		CurrPoint.y += y_vel;
 		
 		
-		if(fontsizeIncrease) {
-			fontSize++;
+		if(this.fontsizeIncrease) {
+			this.fontSize++;
 		}
 		else {
-			fontSize--;
+			this.fontSize--;
 		}
-		if(fontSize < 90) {
-			fontsizeIncrease = true;
-			fontSize = 90;
-		}
-		
-		if(CurrPoint.x + StringWidth > ScreenDimen.width-ScreenInsets.right) {
-			x_vel *= -1;
-			CurrPoint.x = ScreenInsets.right - StringWidth;	
-			if(fontsizeIncrease == true) {
-				fontsizeIncrease = false;
-			}
-			else
-				fontsizeIncrease = true;
+		if(this.fontSize < 90) {
+			this.fontsizeIncrease = true;
+			this.fontSize = 90;
 		}
 		
-		if(CurrPoint.x < ScreenInsets.left) {
-			x_vel *= -1;
-			CurrPoint.x = ScreenInsets.left;
-			if(fontsizeIncrease == true) {
-				fontsizeIncrease = false;
+		if(this.CurrPoint.x + this.StringWidth > this.ScreenDimen.width-this.ScreenInsets.right) {
+			this.x_vel *= -1;
+			this.CurrPoint.x = this.ScreenInsets.right - this.StringWidth;	
+			if(this.fontsizeIncrease == true) {
+				this.fontsizeIncrease = false;
 			}
 			else
-				fontsizeIncrease = true;
+				this.fontsizeIncrease = true;
+		}
+		
+		if(this.CurrPoint.x < this.ScreenInsets.left) {
+			this.x_vel *= -1;
+			this.CurrPoint.x = this.ScreenInsets.left;
+			if(this.fontsizeIncrease == true) {
+				this.fontsizeIncrease = false;
+			}
+			else
+				this.fontsizeIncrease = true;
 		}
 		
 		if(CurrPoint.y - StringAscent < ScreenInsets.top) {
-			y_vel *= -1;
-			CurrPoint.y = ScreenInsets.top;
-			if(fontsizeIncrease == true) {
-				fontsizeIncrease = false;
+			this.y_vel *= -1;
+			this.CurrPoint.y = this.ScreenInsets.top;
+			if(this.fontsizeIncrease == true) {
+				this.fontsizeIncrease = false;
 			}
 			else
-				fontsizeIncrease = true;
+				this.fontsizeIncrease = true;
 		}
 		
-		if(CurrPoint.y + (StringHeight - StringAscent) > ScreenInsets.bottom) {
-			y_vel *= -1;
-			CurrPoint.y = ScreenInsets.bottom;
-			if(fontsizeIncrease == true) {
-				fontsizeIncrease = false;
+		if(this.CurrPoint.y + (this.StringHeight - this.StringAscent) > this.ScreenInsets.bottom) {
+			this.y_vel *= -1;
+			this.CurrPoint.y = this.ScreenInsets.bottom;
+			if(this.fontsizeIncrease == true) {
+				this.fontsizeIncrease = false;
 			}
 			else
-				fontsizeIncrease = true;
+				this.fontsizeIncrease = true;
 		}
 	}
-	boolean temp = true; 
 	public void paint(Graphics screen) {
 		
 		Dimension dimen = this.getSize();
 		
-		if(OffScreenImage != null || !dimen.equals(ScreenDimen)) {
-			ScreenDimen = dimen;
-			OffScreenImage = createImage(dimen.width, dimen.height);
+		if(this.OffScreenImage != null || !dimen.equals(ScreenDimen)) {
+			this.ScreenDimen = dimen;
+			this.OffScreenImage = createImage(dimen.width, dimen.height);
 		}
 		Graphics g = OffScreenImage.getGraphics();
 		//Setting Up the Font
@@ -118,19 +118,18 @@ public class MovingString extends JFrame implements Runnable {
 		g.fillRect(ScreenInsets.left, ScreenInsets.top, ScreenDimen.width - ScreenInsets.right, ScreenDimen.height - ScreenInsets.bottom);
 		*/g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
 		g.setColor(color_generator());
-		StringHeight = g.getFontMetrics().getHeight();
-		StringAscent = g.getFontMetrics().getAscent();
-		StringWidth = g.getFontMetrics().stringWidth(text);
+		this.StringHeight = g.getFontMetrics().getHeight();
+		this.StringAscent = g.getFontMetrics().getAscent();
+		this.StringWidth = g.getFontMetrics().stringWidth(text);
 		
 		//Update StartPoint for First Time
-		if(temp) {
-			CurrPoint = new Point((ScreenDimen.width-StringWidth)/2, (ScreenDimen.height/2)-StringAscent);
-			temp = false;
+		if(this.temp) {
+			this.CurrPoint = new Point((this.ScreenDimen.width-this.StringWidth)/2, (this.ScreenDimen.height/2)-this.StringAscent);
+			this.temp = false;
 		}
 		
 		g.drawString(text, CurrPoint.x, CurrPoint.y);
 		screen.drawImage(OffScreenImage, 0, 0, this);
-		update();
 	}
 	
 
@@ -139,7 +138,8 @@ public class MovingString extends JFrame implements Runnable {
 		while(true) {
 			try {
 				Thread.sleep(100);
-				repaint();
+				this.repaint();
+				this.update();
 			}
 			catch(InterruptedException e) {}
 		}

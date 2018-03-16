@@ -39,6 +39,7 @@ public class drawingProgram extends JFrame{
 		super("Drawing Program");
 		setSize(800, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setResizable(false);
 		
 		MyMouseHandler mmh = new MyMouseHandler();
 		addMouseListener(mmh);

@@ -1,0 +1,11 @@
+﻿param($ip)
+Test-Connection $ip -Count 1 | Where-Object {$_.ResponseTimeTOLive -lt 255 -and $_.ResponseTimeTOLive -gt 129} | 
+                                ForEach-Object {Write-Host 'The OS for' $ip 'is Unix'}
+
+param($ip)
+Test-Connection $ip -Count 1 | Where-Object {$_.ResponseTimeTOLive -lt 128 -and $_.ResponseTimeTOLive -gt 65} | 
+                                ForEach-Object {Write-Host 'The OS for' $ip 'is Windows'}
+
+param($ip)
+Test-Connection $ip -Count 1 | Where-Object {$_.ResponseTimeTOLive -lt 64 -and $_.ResponseTimeTOLive -gt 1} | 
+                                ForEach-Object {Write-Host 'The OS for' $ip 'is Linux'}

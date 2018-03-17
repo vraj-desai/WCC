@@ -46,70 +46,70 @@ public class MovingString extends JFrame implements Runnable {
 		t.start(); 
 	}
 	
-	public void update() {
+	void update() {
 		//Update fontsize and positioning
 		CurrPoint.x += x_vel;
 		CurrPoint.y += y_vel;
 		
 		
-		if(this.fontsizeIncrease) {
-			this.fontSize++;
+		if(fontsizeIncrease) {
+			fontSize++;
 		}
 		else {
-			this.fontSize--;
+			fontSize--;
 		}
-		if(this.fontSize < 90) {
-			this.fontsizeIncrease = true;
-			this.fontSize = 90;
-		}
-		
-		if(this.CurrPoint.x + this.StringWidth > this.ScreenDimen.width-this.ScreenInsets.right) {
-			this.x_vel *= -1;
-			this.CurrPoint.x = this.ScreenInsets.right - this.StringWidth;	
-			if(this.fontsizeIncrease == true) {
-				this.fontsizeIncrease = false;
-			}
-			else
-				this.fontsizeIncrease = true;
+		if(fontSize < 90) {
+			fontsizeIncrease = true;
+			fontSize = 90;
 		}
 		
-		if(this.CurrPoint.x < this.ScreenInsets.left) {
-			this.x_vel *= -1;
-			this.CurrPoint.x = this.ScreenInsets.left;
-			if(this.fontsizeIncrease == true) {
-				this.fontsizeIncrease = false;
+		if(CurrPoint.x + StringWidth > ScreenDimen.width-ScreenInsets.right) {
+			x_vel *= -1;
+			CurrPoint.x = ScreenInsets.right - StringWidth;	
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
 			}
 			else
-				this.fontsizeIncrease = true;
+				fontsizeIncrease = true;
+		}
+		
+		if(CurrPoint.x < ScreenInsets.left) {
+			x_vel *= -1;
+			CurrPoint.x = ScreenInsets.left;
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
+			}
+			else
+				fontsizeIncrease = true;
 		}
 		
 		if(CurrPoint.y - StringAscent < ScreenInsets.top) {
-			this.y_vel *= -1;
-			this.CurrPoint.y = this.ScreenInsets.top;
-			if(this.fontsizeIncrease == true) {
-				this.fontsizeIncrease = false;
+			y_vel *= -1;
+			CurrPoint.y = ScreenInsets.top;
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
 			}
 			else
-				this.fontsizeIncrease = true;
+				fontsizeIncrease = true;
 		}
 		
-		if(this.CurrPoint.y + (this.StringHeight - this.StringAscent) > this.ScreenInsets.bottom) {
-			this.y_vel *= -1;
-			this.CurrPoint.y = this.ScreenInsets.bottom;
-			if(this.fontsizeIncrease == true) {
-				this.fontsizeIncrease = false;
+		if(CurrPoint.y + (StringHeight - StringAscent) > ScreenInsets.bottom) {
+			y_vel *= -1;
+			CurrPoint.y = ScreenInsets.bottom;
+			if(fontsizeIncrease == true) {
+				fontsizeIncrease = false;
 			}
 			else
-				this.fontsizeIncrease = true;
+				fontsizeIncrease = true;
 		}
 	}
 	public void paint(Graphics screen) {
 		
-		Dimension dimen = this.getSize();
+		Dimension dimen = getSize();
 		
-		if(this.OffScreenImage != null || !dimen.equals(ScreenDimen)) {
-			this.ScreenDimen = dimen;
-			this.OffScreenImage = createImage(dimen.width, dimen.height);
+		if(OffScreenImage != null || !dimen.equals(ScreenDimen)) {
+			ScreenDimen = dimen;
+			OffScreenImage = createImage(dimen.width, dimen.height);
 		}
 		Graphics g = OffScreenImage.getGraphics();
 		//Setting Up the Font
@@ -118,14 +118,14 @@ public class MovingString extends JFrame implements Runnable {
 		g.fillRect(ScreenInsets.left, ScreenInsets.top, ScreenDimen.width - ScreenInsets.right, ScreenDimen.height - ScreenInsets.bottom);
 		*/g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
 		g.setColor(color_generator());
-		this.StringHeight = g.getFontMetrics().getHeight();
-		this.StringAscent = g.getFontMetrics().getAscent();
-		this.StringWidth = g.getFontMetrics().stringWidth(text);
+		StringHeight = g.getFontMetrics().getHeight();
+		StringAscent = g.getFontMetrics().getAscent();
+		StringWidth = g.getFontMetrics().stringWidth(text);
 		
 		//Update StartPoint for First Time
-		if(this.temp) {
-			this.CurrPoint = new Point((this.ScreenDimen.width-this.StringWidth)/2, (this.ScreenDimen.height/2)-this.StringAscent);
-			this.temp = false;
+		if(temp) {
+			CurrPoint = new Point((ScreenDimen.width-StringWidth)/2, (ScreenDimen.height/2)-StringAscent);
+			temp = false;
 		}
 		
 		g.drawString(text, CurrPoint.x, CurrPoint.y);
@@ -138,8 +138,8 @@ public class MovingString extends JFrame implements Runnable {
 		while(true) {
 			try {
 				Thread.sleep(100);
-				this.repaint();
-				this.update();
+				repaint();
+				update();
 			}
 			catch(InterruptedException e) {}
 		}

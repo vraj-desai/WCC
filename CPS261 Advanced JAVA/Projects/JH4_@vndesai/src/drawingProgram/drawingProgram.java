@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -47,7 +48,7 @@ public class drawingProgram extends JFrame implements ActionListener{
 	
 	drawingProgram(){
 		super("Drawing Program");
-		setSize(800, 600);
+		setSize(800, 400);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		
@@ -58,25 +59,26 @@ public class drawingProgram extends JFrame implements ActionListener{
 		
 		//Adding Panels
 		setLayout(new BorderLayout());
+
+		setVisible(true);
 		
 		//Select Shape Panel
 		JPanel topPanel = new JPanel();
 		topPanel.setLayout(new FlowLayout());
-		topPanel.setBackground(Color.LIGHT_GRAY);
 		JPanel shapePanel = new JPanel();
 		shapePanel.setLayout(new FlowLayout());
-		
 		filled = new Checkbox("filled", true);
 		CheckboxGroup shapeGroup = new CheckboxGroup();
 		rectangle = new Checkbox("Rectangle", shapeGroup, true);
 		oval = new Checkbox("Oval", shapeGroup, false);
 		line = new Checkbox("Line", shapeGroup, false);
 		scribble = new Checkbox("Scribble", shapeGroup, false);
-		
+		shapePanel.setBackground(Color.LIGHT_GRAY);
 		shapePanel.add(rectangle);
 		shapePanel.add(oval);
 		shapePanel.add(line);
 		shapePanel.add(scribble);
+		topPanel.setBackground(Color.LIGHT_GRAY);
 		
 		topPanel.add(filled);
 		topPanel.add(shapePanel);
@@ -99,7 +101,6 @@ public class drawingProgram extends JFrame implements ActionListener{
 				
 		add(colorPanel, BorderLayout.WEST);
 		
-		setVisible(true);
 	}
 	
 	public void paint(Graphics g) {
@@ -122,13 +123,15 @@ public class drawingProgram extends JFrame implements ActionListener{
 	
 	public static void main(String[] args) {
 		drawingProgram dp = new drawingProgram();
+		//dp.actionPerformed(e);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String str = e.getActionCommand();
+		Checkbox selection = (Checkbox)(e.getSource());
+		String selectionLabel = selection.getLabel();
 		
-		switch(str) {
+		switch(selectionLabel) {
 		
 		case "Oval":
 			drawing.setdrawType(drawType.oval);
@@ -136,19 +139,23 @@ public class drawingProgram extends JFrame implements ActionListener{
 		case "Line":
 			drawing.setdrawType(drawType.line);
 			break;
+		case "Scribble":
+			break;
+		case "Rectangle":
+			break;
 		case "filled":
 			if(this.getFilledVal())
 				drawing.setFilled(true);
 			else
 				drawing.setFilled(false);
 			break;
-		case "blue":
+		case "Blue":
 			drawing.setColor(Color.BLUE);
 			break;
-		case "red":
+		case "Red":
 			drawing.setColor(Color.RED);
 			break;
-		case "green":
+		case "Green":
 			drawing.setColor(Color.GREEN);
 			break;
 		default:

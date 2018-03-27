@@ -59,8 +59,6 @@ public class drawingProgram extends JFrame implements ActionListener{
 		
 		//Adding Panels
 		setLayout(new BorderLayout());
-
-		setVisible(true);
 		
 		//Select Shape Panel
 		JPanel topPanel = new JPanel();
@@ -100,6 +98,8 @@ public class drawingProgram extends JFrame implements ActionListener{
 		colorPanel.add(blue, BorderLayout.SOUTH);
 				
 		add(colorPanel, BorderLayout.WEST);
+
+		setVisible(true);
 		
 	}
 	

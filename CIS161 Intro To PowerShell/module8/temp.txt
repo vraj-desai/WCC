@@ -1,0 +1,14 @@
+hub\WCC\CIS161 Intro To PowerShell\module8> .\8.1-copy-file.ps1 .\temp.txt e:\
+Method invocation failed because [System.String] does not contain a method named 'exists'.
+At E:\Github\WCC\CIS161 Intro To PowerShell\module8\8.1-copy-file.ps1:6 char:4
++ if($source.exists($source.Parent)){
++    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : InvalidOperation: (:) [], RuntimeException
+    + FullyQualifiedErrorId : MethodNotFound
+PS E:\Github\WCC\CIS161 Intro To PowerShell\module8> Test-Path .
+True
+PS E:\Github\WCC\CIS161 Intro To PowerShell\module8> .\8.1-copy-file.ps1 .\temp.txt e:\
+PS E:\Github\WCC\CIS161 Intro To PowerShell\module8> .\8.1-copy-file.ps1 .\temp.txt e:\ -WhatIf
+What if: Performing the operation "Copy File" on target "Item: E:\Github\WCC\CIS161 Intro To PowerShell\module8\temp.txt Destination: E:\temp.txt"
+.
+PS E:\Github\WCC\CIS161 Intro To PowerShell\module8> 

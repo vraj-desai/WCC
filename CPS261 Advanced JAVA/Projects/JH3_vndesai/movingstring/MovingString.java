@@ -1,5 +1,7 @@
 package MovingString;
 
+
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -12,11 +14,11 @@ import java.util.Random;
 import javax.swing.JFrame;
 
 public class MovingString extends JFrame implements Runnable {
-
+ private Dimension dimen;
 	static boolean temp = true; 
 	static private int fontSize = 90;
 	static boolean fontsizeIncrease = true;
-	static double x_vel,y_vel;
+	static int x_vel,y_vel;
 	static Point CurrPoint;
 	static int StringWidth, StringHeight, StringAscent;
 	static Insets ScreenInsets = null;
@@ -35,12 +37,13 @@ public class MovingString extends JFrame implements Runnable {
 		setVisible(true);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
-		
+		dimen = getSize();
 		//update points of the frame
 		ScreenInsets = getInsets();
+                
 		x_vel = (int)(-10 + (int)(20*Math.random()));
 		y_vel = (int)(-10 + (int)(20*Math.random()));
-		
+		CurrPoint=new Point(50,50);
 		//Thread
 		Thread t = new Thread(this);
 		t.start(); 
@@ -63,7 +66,7 @@ public class MovingString extends JFrame implements Runnable {
 			fontSize = 90;
 		}
 		
-		if(CurrPoint.x + StringWidth > ScreenDimen.width-ScreenInsets.right) {
+		if(CurrPoint.x + StringWidth >ScreenDimen.width-ScreenInsets.right) {
 			x_vel *= -1;
 			CurrPoint.x = ScreenInsets.right - StringWidth;	
 			if(fontsizeIncrease == true) {
@@ -83,9 +86,10 @@ public class MovingString extends JFrame implements Runnable {
 				fontsizeIncrease = true;
 		}
 		
-		if(CurrPoint.y - StringAscent < ScreenInsets.top) {
+		if(CurrPoint.y - StringAscent <= ScreenInsets.top) 
+                {
 			y_vel *= -1;
-			CurrPoint.y = ScreenInsets.top;
+			CurrPoint.y = ScreenInsets.top+StringAscent;
 			if(fontsizeIncrease == true) {
 				fontsizeIncrease = false;
 			}
@@ -93,7 +97,7 @@ public class MovingString extends JFrame implements Runnable {
 				fontsizeIncrease = true;
 		}
 		
-		if(CurrPoint.y + (StringHeight - StringAscent) > ScreenInsets.bottom) {
+		if(CurrPoint.y + (StringHeight - StringAscent) > dimen.height- ScreenInsets.bottom) {
 			y_vel *= -1;
 			CurrPoint.y = ScreenInsets.bottom;
 			if(fontsizeIncrease == true) {
@@ -112,6 +116,7 @@ public class MovingString extends JFrame implements Runnable {
 			OffScreenImage = createImage(dimen.width, dimen.height);
 		}
 		Graphics g = OffScreenImage.getGraphics();
+            
 		//Setting Up the Font
 		String text = "Vraj";
 		/*g.setColor(Color.WHITE);

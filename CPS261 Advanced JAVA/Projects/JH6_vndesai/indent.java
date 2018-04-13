@@ -23,7 +23,7 @@ public class indent{
         Deque<Integer> indents = new ArrayDeque<Integer>();
         while(scan.hasNextLine()){
         	String line =  scan.nextLine();
-        	int colIdx = lineColNum(scan.nextLine());
+        	int colIdx = lineColNum(line);
             if(colIdx != -1) {
             	if(indents.peekFirst() == null) {
             		indents.addFirst(colIdx);
@@ -34,8 +34,8 @@ public class indent{
             	else {
             		int indentPeek = indents.peekFirst();
             			while(colIdx != indentPeek) {
+        					indents.removeFirst();
             				if(!indents.isEmpty()) {
-            					indents.removeFirst();
                 				indentPeek = indents.peekFirst();
             				}
             				else
@@ -49,7 +49,7 @@ public class indent{
 
     public static void main(String args[]) throws IOException{
         for(int i = 0; i < args.length; i++){
-        	System.out.println("\n\n\nProcessing file: " + args[i] );
+        	System.out.println("\nProcessing file: " + args[i] );
             boolean indentation = indentationChecker(args[i]);
             if(indentation){
             	System.out.println("Indented Properly!");

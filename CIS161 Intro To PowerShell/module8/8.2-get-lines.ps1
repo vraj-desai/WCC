@@ -1,9 +1,6 @@
-[CmdletBinding(SupportsPaging)]
-param([parameter(Mandatory)][string]$source)
-if(-not (Test-Path $source)){
-    throw "$source does not exist!"
-}
+param([parameter(Mandatory)][string]$source = "localhost")
 $numLines = 0
+Write-Host $source
 ForEach($line in get-content $source)
 {
     $numLines++

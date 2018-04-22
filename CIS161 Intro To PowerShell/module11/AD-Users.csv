@@ -1,0 +1,7 @@
+Group,GroupSamName,LDAP1,LDAP2,LDAP3,GivenName,SurName,Identity,Title,StreetAddress,City,PostalCode,State
+Payroll,payrollxx,dc=net,dc=acme,ou=xx-MCOffice,John,Doe,jdoexx,Mr,4800 E Huron River Drive,Ann Arbor,48105,Mi
+Payroll,payrollxx,dc=net,dc=acme,ou=xx-MCOffice,Margaret,Smith,msmithxx,Ms,4800 E Huron River Drive,Ann Arbor,48105,Mi
+Payroll,payrollxx,dc=net,dc=acme,ou=xx-MCOffice,Khaled,Mansour,kmansourxx,Mr,4800 E Huron River Drive,Ann Arbor,48105,Mi
+Sales,salesxx,dc=net,dc=acme,ou=xx-MCOffice,Alice B,Toklas,alicetxx,Ms,1700 Pennsylvania Ave,Washington DC,20006,
+Sales,salesxx,dc=net,dc=acme,ou=xx-MCOffice,Bharat,Desai,bdesaixx,Mr,3772 Huron,Troy,48911,Mi
+Sales,salesxx,dc=net,dc=acme,ou=xx-MCOffice,Roberto,Hernandez,bobhxx,Mr,1700 Pennsylvania Ave,Washington DC,20006,

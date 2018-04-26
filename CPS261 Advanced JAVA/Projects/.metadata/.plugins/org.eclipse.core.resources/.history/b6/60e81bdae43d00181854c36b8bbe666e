@@ -1,0 +1,51 @@
+import java.awt.*;
+import java.util.*;
+import java.io.*;
+
+public class indent{
+
+    public static int lineColNum(String line){
+        for(int i = 0; i < line.length(); i++){
+            if(line.charAt(i) != ' '){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean indentationChecker(String fileName){
+        FileInputStream reader = new FileInputStream(fileName);
+        Scanner scan = new Scanner(reader);
+        Deque<Integer> indents = new ArrayDeque<Integer>();
+        while(scan.hasNextLine()){
+            if(indents.poll() == null){
+                indents.offerFirst(lineColNum(scan.nextLine()));
+            }
+            else{
+                if(lineColNum(scan.nextLine()) > indents.peekFirst()){
+                    indents.offerFirst(lineColNum(scan.nextLine()));
+                }
+                else if(lineColNum(scan.nextLine()) == indents.peekFirst()){
+                    indents.removeFirst();
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+
+        if(indents.poll() == null){
+            return true;
+        }
+        return false;
+    }
+
+    static void main(String args[]){
+        for(int i = 0; i < args.length; i++){
+            boolean indentation = indentationChecker(args[i]);
+            if(indentation){
+
+            }
+        }
+    }
+}

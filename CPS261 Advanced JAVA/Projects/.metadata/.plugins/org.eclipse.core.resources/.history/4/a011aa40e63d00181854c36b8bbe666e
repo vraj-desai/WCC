@@ -1,0 +1,64 @@
+import java.util.*;
+import java.io.*;
+
+public class indent{
+
+    public static int lineColNum(String line){
+        for(int i = 0; i < line.length(); i++){
+            if(line.charAt(i) != ' '){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean indentationChecker(String fileName) throws IOException{
+        FileInputStream reader = null;
+        Scanner scan = null;
+		try {
+			reader = new FileInputStream(fileName);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(fileName + "not found!");
+		}
+		if(reader != null) {
+			scan = new Scanner(reader);
+		}
+        Deque<Integer> indents = new ArrayDeque<Integer>();
+        while(scan.hasNextLine()){
+            if(indents.poll() == null){
+                indents.offerFirst(lineColNum(scan.nextLine()));
+            }
+            else{
+                if(lineColNum(scan.nextLine()) > indents.peekFirst()){
+                    indents.offerFirst(lineColNum(scan.nextLine()));
+                }
+                else if(lineColNum(scan.nextLine()) == indents.peekFirst()){
+                    indents.removeFirst();
+                }
+                else{
+                	if(reader != null) {
+                		reader.close();
+                	}
+                    return false;
+                }
+            }
+        }
+        if(reader != null) {
+        	reader.close();
+        }
+        if(indents.poll() == null){
+            return true;
+        }
+        return false;
+    }
+
+    static void main(String args[]) throws IOException{
+        for(int i = 0; i < args.length; i++){
+            boolean indentation = indentationChecker(args[i]);
+            if(indentation){
+
+            }
+        }
+    }
+}

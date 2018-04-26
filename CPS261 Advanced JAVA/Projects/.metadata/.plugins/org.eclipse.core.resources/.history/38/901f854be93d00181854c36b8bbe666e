@@ -1,0 +1,68 @@
+import java.util.*;
+import java.io.*;
+
+public class indent{
+
+    public static int lineColNum(String line){
+        for(int i = 0; i < line.length(); i++){
+            if(line.charAt(i) != ' '){
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    public static boolean indentationChecker(String fileName) throws IOException{
+        Scanner scan = null;
+		try {
+			scan = new Scanner(new File(fileName));
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			System.out.println(fileName + "not found!");
+		}
+        Deque<Integer> indents = new ArrayDeque<Integer>();
+        while(scan.hasNextLine()){
+            if(indents.poll() == null){
+            	if(lineColNum(scan.nextLine()) != -1)
+            		indents.offerFirst(lineColNum(scan.nextLine()));
+            }
+            else{
+                if(lineColNum(scan.nextLine()) > indents.peekFirst()){
+                	if(lineColNum(scan.nextLine()) != -1)
+                		indents.offerFirst(lineColNum(scan.nextLine()));
+                }
+                else if(lineColNum(scan.nextLine()) == indents.peekFirst()){
+                    indents.removeFirst();
+                }
+                else{
+                	if(lineColNum(scan.nextLine()) != -1) {
+                		if(scan != null) {
+                			scan.close();
+                		}
+                		return false;
+                	}
+                	continue;
+                }
+            }
+        }
+        
+        if(scan != null) {
+        	scan.close();
+        }
+        
+        if(indents.poll() == null){
+            return true;
+        }
+        return false;
+    }
+
+    static void main(String args[]) throws IOException{
+        for(int i = 0; i < args.length; i++){
+        	System.out.println("\n\n\n Processing file: " + args[i] );
+            boolean indentation = indentationChecker(args[i]);
+            if(indentation){
+            	
+            }
+        }
+    }
+}

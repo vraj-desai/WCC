@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.javaApplet">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/JH6_vndesai"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<intAttribute key="org.eclipse.jdt.launching.APPLET_HEIGHT" value="200"/>
+<stringAttribute key="org.eclipse.jdt.launching.APPLET_NAME" value=""/>
+<mapAttribute key="org.eclipse.jdt.launching.APPLET_PARAMETERS"/>
+<intAttribute key="org.eclipse.jdt.launching.APPLET_WIDTH" value="200"/>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="indent.indent"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="ProperlyIndented.txt"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="JH6_vndesai"/>
+</launchConfiguration>
